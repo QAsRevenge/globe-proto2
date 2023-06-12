@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
 import Globe from "react-globe.gl";
+import * as THREE from "three";
 
 const color = () => {
   return "#83d4f0";
@@ -31,14 +32,16 @@ export function World() {
       <Globe
         ref={globeEl}
         globeImageUrl={
-          "https://unpkg.com/three-globe@2.27.2/example/img/earth-night.jpg"
+          "//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
         }
+        bumpImageUrl={"//unpkg.com/three-globe/example/img/earth-topology.png"}
         backgroundImageUrl={"night-sky.png"}
         arcsData={arcsData}
         arcColor={color}
         arcAltitude={0.3}
-        arcDashGap={0.01}
-        arcDashAnimateTime={8000}
+        arcDashGap={1}
+        arcDashAnimateTime={3400}
+        arcStroke={0.5}
       />
     </>
   );
