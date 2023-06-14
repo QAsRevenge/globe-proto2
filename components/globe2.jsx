@@ -7,22 +7,6 @@ import Globe from "react-globe.gl";
 export const World = () => {
   const globeEl = useRef();
 
-  useEffect(() => {
-    const globe = globeEl.current;
-    let aabb = new THREE.Box3().setFromObject(globe);
-    let center = aabb.getCenter(new THREE.Vector3());
-    let size = aabb.getSize(new THREE.Vector3());
-
-    gsap.to(camera.position, {
-      duration: 1,
-      x: center.x,
-      y: center.y,
-      z: center.z + size.z,
-      onUpdate: function () {
-        camera.lookAt(center);
-      },
-    });
-  });
   // Gen random data
   const N = 30;
   const gData = [...Array(N).keys()].map(() => ({
@@ -41,7 +25,7 @@ export const World = () => {
     globe.controls().autoRotate = false;
     globe.controls().autoRotateSpeed = 0.1;
     const mapRotation = -0.003;
-    const mapAlt = 0.01;
+    const mapAlt = 0.006;
     // globe.scene(function (globe) {
     //   globe.frustumCulled = false;
     // });
@@ -53,10 +37,10 @@ export const World = () => {
         new THREE.SphereGeometry(globe.getGlobeRadius() * (1 + mapAlt), 75, 75),
         new THREE.MeshPhongMaterial({
           map: mapTexture,
-          depthWrite: false,
+          depthWrite: true,
         })
       );
-      //globe.scene().add(map);
+      globe.scene().add(map);
       (function rotateWorld() {
         map.rotation.y += (mapRotation * Math.PI) / 180;
         requestAnimationFrame(map);
@@ -94,8 +78,6 @@ export const World = () => {
     <Globe
       ref={globeEl}
       animateIn={false}
-      globeImageUrl={"/files/ColorMap.jpg"}
-      bumpImageUrl={"/files/BumpMap.jpg"}
       htmlElementsData={gData}
       htmlElement={(d) => {
         const el = document.createElement("div");
